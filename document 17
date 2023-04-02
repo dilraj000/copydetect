@@ -1,0 +1,63 @@
+import random
+import time
+
+def calculate_rating(difference):
+    if difference <= 0.25:
+        return "just wow!"
+    elif difference <= 0.5:
+        return "Great!"
+    elif difference <= 1:
+        return "OK!"
+    else:
+        return "Poor!"
+
+print("this is the Response time tester!")
+print("Once a random amount of time has passed, you will be required to press enter. Can you get as close as you can?")
+
+while True:
+    try:
+        rounds = int(input("Decide how many rounds you want: "))
+        if rounds >= 1:
+            break
+        else:
+            print("not valid input ! Enter a positive integer only.")
+    except ValueError:
+        print("A valid input was not provided! Enter a positive integer.")
+
+print()
+
+results = []
+
+for i in range(rounds):
+    target_time = random.randint(2, 8)
+    print(f"Round {i+1} of {rounds}.")
+    print("time to get ready!")
+    time.sleep(3)
+    print(f"Press enter in {target_time} seconds, Starting...now!")
+    start_time = time.time()
+    input()
+    end_time = time.time()
+    response_time = end_time - start_time
+    difference = abs(target_time - response_time)
+    rating = calculate_rating(difference)
+    results.append((i+1, target_time, response_time, difference, rating))
+    print(f"That was {response_time:.2f} seconds.")
+    print(rating)
+    print()
+
+print("Testing complete! Press enter to see a breakdown of your results.")
+input()
+
+print("Round  Target  Response   Difference")
+for result in results:
+    print(f"{result[0]:<6}{result[1]:<9}{result[2]:<11.2f}{result[3]:<10.2f}{result[3]-result[1]:+6.2f}s {result[4]}")
+
+early_responses = len([result for result in results if result[3] < 0])
+if early_responses > rounds/2:
+    print("You usually respond too early.")
+else:
+    print("You usually respond too late.")
+
+overall_difference = sum(result[3] for result in results) / rounds
+overall_rating = calculate_rating(overall_difference)
+print(f"Your overall rating is: {overall_rating}")
