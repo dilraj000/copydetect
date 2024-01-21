@@ -3,3 +3,4 @@ matplotlib
 jinja2
 pygments
 tqdm
+pillow>=10.2.0 # not directly required, pinned by Snyk to avoid a vulnerability
